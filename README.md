@@ -41,4 +41,4 @@
 
 ## 라이센스
 
-MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
+MIT &copy; [NoHack](mailto:yeinalee@gmail.com)(mailto:@gmail.com)
