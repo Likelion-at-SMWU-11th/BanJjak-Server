@@ -1,31 +1,21 @@
 # BanJjak-Server
+
 2023년 멋쟁이사자처럼 중앙 해커톤 숙명여대 반짝(2팀) 백앤드
-
-<p align="center">
-  <br>
-  <img src="./images/common/logo-sample.jpeg">
-  <br>
-</p>
-
-목차
 
 ## 프로젝트 소개
 
 <p align="justify">
-프로젝트 개요/동기
+반려동물을 위한 짝을 찾다. 유기동물 입양 서비스
 </p>
-
-<p align="center">
-GIF Images
-</p>
+개발기간 : 2023.07 ~ 2023.08
 
 <br>
 
 ## 기술 스택
 
-| JavaScript | TypeScript |  React   |  Django   |
-| :--------: | :--------: | :------: | :-----: |
-|   ![js]    |   ![ts]    | ![react] | ![django] |
+| 백앤드 |     |     |
+| :----: | :-: | :-: |
+| Django |     |     |
 
 <br>
 
@@ -52,10 +42,3 @@ GIF Images
 ## 라이센스
 
 MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
-
-<!-- Stack Icon Refernces -->
-
-[js]: /images/stack/javascript.svg
-[ts]: /images/stack/typescript.svg
-[react]: /images/stack/react.svg
-[node]: /images/stack/node.svg
