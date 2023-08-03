@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "users",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -120,6 +122,8 @@ STATIC_FILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 프로젝트 정적 �
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = 'users.User'  # 사용자 모델 추가
 
 # 파일 업로드 기능 개발 시 필요
 MEDIA_URL = '/media/'
