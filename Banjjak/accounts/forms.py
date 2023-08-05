@@ -15,13 +15,14 @@ class ManagerRegistrationForm(UserCreationForm):
         fields = ['email', 'password1', 'password2', 'username', 'phone']
 
 
-class UserLoginForm(AuthenticationForm):
-    class Meta:
-        model = get_user_model()
-        fields = ['email', 'password']
+User = get_user_model()
 
 
-class ManagerLoginForm(AuthenticationForm):
-    class Meta:
-        model = get_user_model()
-        fields = ['email', 'password']
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label='Email')
+    password = forms.CharField(widget=forms.PasswordInput, label='Password')
+
+
+class ManagerLoginForm(forms.Form):
+    email = forms.EmailField(label='Email')
+    password = forms.CharField(widget=forms.PasswordInput, label='Password')
