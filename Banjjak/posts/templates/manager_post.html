@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>작성 페이지</title>
+</head>
+<body>
+    <h1>반려동물 작성 페이지</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="title">공고동물 이름:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="image">공고동물 사진:</label>
+        <input type="file" id="image" name="image"><br>
+
+        <label for="gender">성별:</label>
+        <select id="gender" name="gender">
+            <option value="unknown">미확인</option>
+            <option value="female">암컷</option>
+            <option value="male">수컷</option>
+        </select><br>
+
+        <label for="is_neutered">중성화 여부:</label>
+        <select id="is_neutered" name="is_neutered">
+            <option value="unknown">미확인</option>
+            <option value="neutered">중성화O</option>
+            <option value="notneutered">중성화X</option>
+        </select><br>
+
+        <label for="age">나이:</label>
+        <input type="text" id="age" name="age"><br>
+
+        <label for="weight">몸무게:</label>
+        <input type="text" id="weight" name="weight"><br>
+
+        <label for="content">관리자 한마디:</label>
+        <input id="content" name="content"></input><br>
+
+        <label for="alert">특이사항:</label>
+        <textarea id="alert" name="alert"></textarea><br>
+
+        <button type="submit">작성</button>
+    </form>
+</body>
+</html>
