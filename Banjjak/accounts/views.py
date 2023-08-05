@@ -32,7 +32,7 @@ def manager_registration_view(request):
 
 def user_login_view(request):
     if request.method == 'POST':
-        form = UserLoginForm(request, request.POST)
+        form = UserLoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
