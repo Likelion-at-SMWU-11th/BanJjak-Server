@@ -183,13 +183,30 @@ def ManagerSignin(request):
 def ManagerLogin(request):
     email = request.POST['email']
     password = request.POST['password']
+    remember_me = request.data.get('remember_me', False)  # 자동 로그인
+    remember_id = request.data.get('remember_id', False)  # 아이디 저장
+
     user = authenticate(request, email=email, password=password, )
 
     if user and user.is_manager:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        if remember_me:
+            request.session.set_expiry(2592000)  # 30일동안 로그인 유지
+
+        if remember_id:
+            response = Response({'detail': 'Logged in'},
+                                status=status.HTTP_200_OK)
+            response.set_cookie('remembered_email', email, max_age=2592000)
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            response.data['token'] = token.key
+            return response
+        else:
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
     else:
-        return Response(status=401)
+        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
     """
     if request.method == 'POST':
         serializer = ManagerLoginSerializer(data=request.data)
