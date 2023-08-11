@@ -90,6 +90,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from users.models import User
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate, login
 
 
@@ -110,6 +111,16 @@ def UserSignin(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def UserLogin(request):
+    email = request.POST['email']
+    password = request.POST['password']
+    user = authenticate(request, email=email, password=password, )
+
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response(status=401)
+    """
     if request.method == 'POST':
         serializer = UserLoginSerializer(data=request.data)
 
@@ -118,11 +129,20 @@ def UserLogin(request):
         if serializer.validated_data['email'] == "None":
             return Response({'message': 'fail'}, status=status.HTTP_200_OK)
 
+        user = serializer.validated_data
+        token, created = Token.objects.get_or_create(user=user)
+
+        response = {
+            'success': 'True',
+            'token': token.key
+        }
+   
         response = {
             'success': 'True',
             'token': serializer.data['token']
         }
         return Response(response, status=status.HTTP_200_OK)
+        """
 
 
 @api_view(['POST'])

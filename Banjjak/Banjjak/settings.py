@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "taggit",
     "rest_framework",
+    "rest_framework.authtoken",
     "users",
-    "accounts",
     "posts",
+    "accounts",
+    "likes",
 ]
 
 MIDDLEWARE = [
@@ -139,6 +141,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
