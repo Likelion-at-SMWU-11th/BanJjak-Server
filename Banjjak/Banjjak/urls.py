@@ -30,6 +30,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from posts.views import PostViewSet
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
@@ -41,4 +43,5 @@ urlpatterns = [
     path("accounts/", include('accounts.urls', namespace='accounts')),
     path("posts/", include('posts.urls')),
     path("likes/", include("likes.urls", namespace="likes")),
+    path("users/", include('users.urls', namespace="users"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

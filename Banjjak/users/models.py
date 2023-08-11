@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 # Create your models here.
 
+
 # user 커스터마이징
-
-
 class User(AbstractUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=200)

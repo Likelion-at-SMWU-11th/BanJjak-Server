@@ -115,7 +115,7 @@ def UserLogin(request):
     password = request.POST['password']
     user = authenticate(request, email=email, password=password, )
 
-    if user:
+    if user and not user.is_manager:
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
     else:
@@ -162,6 +162,16 @@ def ManagerSignin(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def ManagerLogin(request):
+    email = request.POST['email']
+    password = request.POST['password']
+    user = authenticate(request, email=email, password=password, )
+
+    if user and user.is_manager:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response(status=401)
+    """
     if request.method == 'POST':
         serializer = ManagerLoginSerializer(data=request.data)
 
@@ -175,3 +185,4 @@ def ManagerLogin(request):
             'token': serializer.data['token']
         }
         return Response(response, status=status.HTTP_200_OK)
+        """
