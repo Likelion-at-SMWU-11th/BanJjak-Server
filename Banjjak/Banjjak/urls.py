@@ -30,18 +30,20 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from posts.views import PostViewSet
-from django.conf import settings
+from losts.views import LostViewSet
 from django.conf.urls.static import static
+from django.conf import settings
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
+router.register(r'losts', LostViewSet)
 
 urlpatterns = [
     # 기존 URL 패턴들
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
     path("accounts/", include('accounts.urls', namespace='accounts')),
-    path("posts/", include('posts.urls')),
+    #path("posts/", include('posts.urls')),
     path("likes/", include("likes.urls", namespace="likes")),
     path("users/", include('users.urls', namespace="users"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
