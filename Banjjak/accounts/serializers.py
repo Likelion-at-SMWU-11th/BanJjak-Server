@@ -57,7 +57,7 @@ class ManagerCreateSerializer(serializers.Serializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=64)
     password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
+    # token = serializers.CharField(max_length=255, read_only=True)
 
     def validate(self, data):
         email = data.get("email", None)
@@ -67,6 +67,8 @@ class UserLoginSerializer(serializers.Serializer):
         if user is None or user.is_manager:
             raise serializers.ValidationError('Invalid credentials')
 
+        return user
+        """
         try:
             payload = JWT_PAYLOAD_HANDLER(user)
             jwt_token = JWT_ENCODE_HANDLER(payload)
@@ -78,7 +80,7 @@ class UserLoginSerializer(serializers.Serializer):
         return {
             'email': user.email,
             'token': jwt_token
-        }
+        }"""
 
 
 class ManagerLoginSerializer(serializers.Serializer):

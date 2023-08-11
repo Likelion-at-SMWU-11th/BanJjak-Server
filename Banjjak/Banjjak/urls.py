@@ -38,7 +38,7 @@ urlpatterns = [
     # 기존 URL 패턴들
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
-    #path('api/posts/', include(router.urls)),
-    path('accounts/', include('accounts.urls', namespace='accounts')),
-    
-]
+    path("accounts/", include('accounts.urls', namespace='accounts')),
+    path("posts/", include('posts.urls')),
+    path("likes/", include("likes.urls", namespace="likes")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
