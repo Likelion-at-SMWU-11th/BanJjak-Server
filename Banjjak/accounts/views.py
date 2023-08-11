@@ -1,7 +1,18 @@
+'''
+from .serializers import UserSerializer
+from django.contrib.auth import authenticate, login
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import generics, status
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, ManagerRegistrationForm, UserLoginForm, ManagerLoginForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from rest_framework.parsers import JSONParser
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from users.models import User
 
 # Create your views here.
 
@@ -30,7 +41,7 @@ def manager_registration_view(request):
     return render(request, 'manager_registration.html', {'form': form})
 
 
-def user_login_view(request):
+def user_login(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -50,17 +61,97 @@ def user_login_view(request):
 
 def manager_login_view(request):
     if request.method == 'POST':
-        form = ManagerLoginForm(request.POST)
-        if form.is_valid():
+        data = JSONParser().parse(request)
+        search_email = data['email']
+        obj = User.objects.get(email=search_email)
+        # form = ManagerLoginForm(request.POST)
+        if data['password'] == obj.password:
+            return HttpResponse(status=200)
+            
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(username=email, password=password)
             if user is not None and user.is_manager:
                 login(request, user)
                 return redirect('managermain')  # 로그인 후 리다이렉트할 페이지
-            else:
-                # 인증 실패 시에 대한 처리
-                form.add_error('email', 'Invalid credentials')
+
+        else:
+            # 인증 실패 시에 대한 처리
+            return HttpResponse(status=400)
+            # form.add_error('email', 'Invalid credentials')
     else:
         form = ManagerLoginForm()
     return render(request, 'manager_login.html', {'form': form})
+'''
+from .serializers import UserCreateSerializer, UserLoginSerializer, ManagerCreateSerializer, ManagerLoginSerializer
+from rest_framework import status
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from users.models import User
+from django.contrib.auth import get_user_model, authenticate, login
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def UserSignin(request):
+    if request.method == 'POST':
+        serializer = UserCreateSerializer(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
+
+        if User.objects.filter(email=serializer.validated_data['email']).first() is None:
+            serializer.save()
+            return Response({"message": "ok"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "duplicate email"}, status=status.HTTP_409_CONFLICT)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def UserLogin(request):
+    if request.method == 'POST':
+        serializer = UserLoginSerializer(data=request.data)
+
+        if not serializer.is_valid(raise_exception=True):
+            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
+        if serializer.validated_data['email'] == "None":
+            return Response({'message': 'fail'}, status=status.HTTP_200_OK)
+
+        response = {
+            'success': 'True',
+            'token': serializer.data['token']
+        }
+        return Response(response, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def ManagerSignin(request):
+    if request.method == 'POST':
+        serializer = ManagerCreateSerializer(data=request.data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
+
+        if User.objects.filter(email=serializer.validated_data['email']).first() is None:
+            serializer.save()
+            return Response({"message": "ok"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "duplicate email"}, status=status.HTTP_409_CONFLICT)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def ManagerLogin(request):
+    if request.method == 'POST':
+        serializer = ManagerLoginSerializer(data=request.data)
+
+        if not serializer.is_valid(raise_exception=True):
+            return Response({"message": "Request Body Error."}, status=status.HTTP_409_CONFLICT)
+        if serializer.validated_data['email'] == "None":
+            return Response({'message': 'fail'}, status=status.HTTP_200_OK)
+
+        response = {
+            'success': 'True',
+            'token': serializer.data['token']
+        }
+        return Response(response, status=status.HTTP_200_OK)
