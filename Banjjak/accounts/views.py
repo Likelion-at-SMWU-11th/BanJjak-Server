@@ -91,6 +91,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from users.models import User
 from rest_framework.authtoken.models import Token
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 
 
@@ -110,16 +111,34 @@ def UserSignin(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def UserLogin(request):
     email = request.POST['email']
     password = request.POST['password']
+    remember_me = request.data.get('remember_me', False)  # 자동 로그인
+    remember_id = request.data.get('remember_id', False)  # 아이디 저장
+
     user = authenticate(request, email=email, password=password, )
 
     if user and not user.is_manager:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        if remember_me:
+            request.session.set_expiry(2592000)  # 30일동안 로그인 유지
+
+        if remember_id:
+            response = Response({'detail': 'Logged in'},
+                                status=status.HTTP_200_OK)
+            response.set_cookie('remembered_email', email, max_age=2592000)
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            response.data['token'] = token.key
+            return response
+        else:
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
     else:
-        return Response(status=401)
+        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
     """
     if request.method == 'POST':
         serializer = UserLoginSerializer(data=request.data)
@@ -164,13 +183,30 @@ def ManagerSignin(request):
 def ManagerLogin(request):
     email = request.POST['email']
     password = request.POST['password']
+    remember_me = request.data.get('remember_me', False)  # 자동 로그인
+    remember_id = request.data.get('remember_id', False)  # 아이디 저장
+
     user = authenticate(request, email=email, password=password, )
 
     if user and user.is_manager:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        if remember_me:
+            request.session.set_expiry(2592000)  # 30일동안 로그인 유지
+
+        if remember_id:
+            response = Response({'detail': 'Logged in'},
+                                status=status.HTTP_200_OK)
+            response.set_cookie('remembered_email', email, max_age=2592000)
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            response.data['token'] = token.key
+            return response
+        else:
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
     else:
-        return Response(status=401)
+        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
     """
     if request.method == 'POST':
         serializer = ManagerLoginSerializer(data=request.data)
