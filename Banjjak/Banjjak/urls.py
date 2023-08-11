@@ -39,4 +39,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
     #path('api/posts/', include(router.urls)),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    
 ]
