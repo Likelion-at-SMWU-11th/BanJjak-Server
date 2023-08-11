@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Post(models.Model):
     TYPE_CHOICES = [
-        ('dog', '강아지'),
+        ('dog', '개'),
         ('cat', '고양이'),
         ('etc', '기타'),
     ]
@@ -24,7 +24,7 @@ class Post(models.Model):
     ]
 
     title = models.TextField(verbose_name="공고동물 이름", null=False)
-    image = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
+    image = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
     type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,

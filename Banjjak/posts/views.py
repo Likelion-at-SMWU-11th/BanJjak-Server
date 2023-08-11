@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from .models import Post
+from rest_framework.decorators import api_view, action
 from .serializers import PostListSerializer
 
 # from django.shortcuts import render, redirect
@@ -21,3 +22,5 @@ from .serializers import PostListSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
+    # @action(detail=True, methods=['get'])
+    # def get_post_all
