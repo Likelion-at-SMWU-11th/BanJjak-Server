@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from taggit.managers import TaggableManager
+from multiselectfield import MultiSelectField
 
 User = get_user_model()
-
 
 class Post(models.Model):
     TYPE_CHOICES = [
@@ -16,11 +16,27 @@ class Post(models.Model):
         ('female', '암컷'),
         ('male', '수컷'),
     ]
-
     NEUTERED_CHOICES = [
         ('unknown', '미확인'),
         ('neutered', '중성화O'),
         ('notneutered', '중성화X'),
+    ]
+    TAG_CHOICES=[
+        ('1', '사람좋아'),
+        ('2', '순딩이'),
+        ('3', '사교적'),
+        ('4', '겁쟁이'),
+        ('5', '소심'),
+        ('6', '차분'),
+        ('7', '호기심'),
+        ('8', '애교쟁이'),
+        ('9', '몸짱'),
+        ('10', '집이좋아'),
+        ('11', '산책좋아'),
+        ('12', '먹보'),
+        ('13', '입짧음'),
+        ('14', '실내배변'),
+        ('15', '실외배변'),
     ]
 
     title = models.TextField(verbose_name="공고동물 이름", null=False)
@@ -55,8 +71,8 @@ class Post(models.Model):
         null=True,
         blank=True
     )
-    tags = TaggableManager()
-
+    #tags = TaggableManager()
+    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
     def __str__(self):
         return self.title
 
