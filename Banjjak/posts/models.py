@@ -62,8 +62,8 @@ class Post(models.Model):
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
     content = models.CharField(
-        max_length=70, verbose_name='관리자 한마디', null=True)
-    alert = models.TextField(verbose_name='특이사항', null=True)
+        max_length=70, verbose_name='관리자 한마디', null=False)
+    alert = models.TextField(verbose_name='특이사항', null=False)
     writer = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
