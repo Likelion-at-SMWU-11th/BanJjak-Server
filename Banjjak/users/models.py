@@ -23,3 +23,6 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+    
+    def has_write_permission(self):
+        return self.is_manager
