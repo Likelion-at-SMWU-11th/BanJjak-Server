@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "accounts",
     "likes",
     "losts",
+    "founds",
 ]
 
 MIDDLEWARE = [
