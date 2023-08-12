@@ -23,7 +23,7 @@ class Lost(models.Model):
     lost_place=models.TextField(verbose_name="실종 장소", null=False)
     contact=models.TextField(verbose_name="연락처", null=False)
     animal_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='unknown', verbose_name='동물 종류')
-    kind=models.CharField(max_length=20, verbose_name="품종")
+    kind=models.CharField(max_length=20, verbose_name="품종", default="unknown")
 
     gender = models.CharField(
         max_length=10,
@@ -39,7 +39,7 @@ class Lost(models.Model):
     )
 
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
-    color=models.CharField(max_length=15, verbose_name="털색")
+    color=models.CharField(max_length=15, verbose_name="털색", default="미확인")
     title = models.TextField(verbose_name="제목", null=False)
     content = models.TextField(verbose_name='내용', null=True)
     writer = models.ForeignKey(
