@@ -51,7 +51,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path("admin/", admin.site.urls),
     path("accounts/", include('accounts.urls', namespace='accounts')),
-    #path("posts/", include('posts.urls')),
+    path("posts/", include('posts.urls', namespace="posts")),
     path("likes/", include("likes.urls", namespace="likes")),
-    path("users/", include('users.urls', namespace="users"))
+    path("users/", include('users.urls', namespace="users")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
