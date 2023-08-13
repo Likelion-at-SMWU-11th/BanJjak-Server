@@ -34,6 +34,7 @@ from userposts.views import UserpostViewSet
 from losts.views import LostViewSet
 from requests.views import RequestViewSet
 from founds.views import FoundViewSet
+from reviews.views import ReviewViewSet
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -43,6 +44,7 @@ router.register(r'userposts', UserpostViewSet)
 router.register(r'losts', LostViewSet)
 router.register(r'founds', FoundViewSet)
 router.register(r'requests', RequestViewSet)
+router.register(r'reviews', ReviewViewSet)
 
 urlpatterns = [
     # 기존 URL 패턴들

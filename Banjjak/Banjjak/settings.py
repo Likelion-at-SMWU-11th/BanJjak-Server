@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "founds",
     "requests",
     "userposts",
+    "reviews",
 ]
 
 MIDDLEWARE = [
