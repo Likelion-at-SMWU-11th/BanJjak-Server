@@ -29,3 +29,5 @@ class User(AbstractUser, PermissionsMixin):
     def has_write_permission(self):
         return self.is_manager
     
+    def has_write_permission_user(self):
+         return self.is_manager==0 

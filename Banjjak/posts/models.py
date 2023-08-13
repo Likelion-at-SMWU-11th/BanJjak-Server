@@ -39,14 +39,19 @@ class Post(models.Model):
         ('15', '실외배변'),
     ]
 
-    title = models.TextField(verbose_name="공고동물 이름", null=False)
+    name = models.TextField(verbose_name="공고동물 이름", null=False)
     image = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
-    type = models.CharField(
+    image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
+    image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
+    animal_type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,
         default='unknown',
-        verbose_name="종류"
+        verbose_name="동물"
     )
+    kind=models.CharField(verbose_name="품종", max_length=15, default="미확인")
+    weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
+    age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
@@ -57,10 +62,10 @@ class Post(models.Model):
         max_length=11,  # 'notneutered' 가 가장 긴 값이므로 그에 맞춰 조정
         choices=NEUTERED_CHOICES,
         default='unknown',
-        verbose_name='중성화 여부'
+        verbose_name='중성화'
     )
-    age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
-    weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
+    
+    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
     content = models.CharField(
         max_length=70, verbose_name='관리자 한마디', null=False, default="한마디 없음")
     alert = models.TextField(verbose_name='특이사항', null=False, default="특이사항 없음")
@@ -71,8 +76,9 @@ class Post(models.Model):
         null=True,
         blank=True
     )
+    
     #tags = TaggableManager()
-    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
+    
     def __str__(self):
         return self.title
 
@@ -81,10 +87,10 @@ class Post(models.Model):
     # view_count = models.IntegerField(verbose_name='조회수', default=0)
 
 
-class Comment(models.Model):
-    content = models.TextField(verbose_name='내용')
-    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
-    post = models.ForeignKey(
-        to='Post', on_delete=models.CASCADE, verbose_name='게시글')
-    writer = models.ForeignKey(
-        to=User, on_delete=models.CASCADE, verbose_name='작성자', null=True)
+# class Comment(models.Model):
+#     content = models.TextField(verbose_name='내용')
+#     created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+#     post = models.ForeignKey(
+#         to='Post', on_delete=models.CASCADE, verbose_name='게시글')
+#     writer = models.ForeignKey(
+#         to=User, on_delete=models.CASCADE, verbose_name='작성자', null=True)

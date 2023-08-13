@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "losts",
     "founds",
     "requests",
+    "userposts",
     "likes",
 ]
 

@@ -1,8 +1,8 @@
 from django.db import models
-from users.models import User
+from django.contrib.auth import get_user_model
 
 # Create your models here.
-
+User = get_user_model()
 
 class Review(models.Model):
     Category_CHOICES = [
@@ -13,7 +13,7 @@ class Review(models.Model):
     review_type = models.CharField(
         max_length=8,
         choices=Category_CHOICES,
-        default='unknown',
+        default='adopt',
         verbose_name='카테고리 구분'
     )
 
@@ -26,7 +26,7 @@ class Review(models.Model):
         null=True,
         blank=True
     )
-    image1 = models.ImageField(verbose_name='사진(선택)', null=True, blank=True)
+    image1 = models.ImageField(verbose_name='사진(선택)', null=False, blank=True)
     image2 = models.ImageField(verbose_name='사진(선택)', null=True, blank=True)
 
     def __str__(self):
