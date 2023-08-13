@@ -23,6 +23,22 @@ def userChange(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'detail': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user = request.user
+    profile_image = request.FILES.get('profile')
+
+    if not profile_image:
+        return Response({'detail': 'No profile image provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.profile = profile_image
+    user.save()
+
+    return Response({'detail': 'Profile image updated successfully'}, status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])
