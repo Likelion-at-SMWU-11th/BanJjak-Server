@@ -19,14 +19,17 @@ class CanDeletePostPermission(permissions.BasePermission):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
-    permission_classes = [IsAuthenticated, CanWritePostPermission]  # 로그인 필수 설정
+    permission_classes = [IsAuthenticated]  # 로그인 필수 설정
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update']:
+        if self.action in ['create']:
+            self.permission_classes = [IsAuthenticated, CanWritePostPermission]
+        elif self.action in ['update', 'partial_update']:
             self.permission_classes = [IsAuthenticated, CanEditPostPermission]
         elif self.action == 'destroy':
             self.permission_classes = [IsAuthenticated, CanDeletePostPermission]
         return super().get_permissions()
+
 
 
     def perform_create(self, serializer):
