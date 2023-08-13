@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "likes",
     "losts",
     "founds",
+    "requests",
 ]
 
 MIDDLEWARE = [

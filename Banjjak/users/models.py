@@ -28,3 +28,4 @@ class User(AbstractUser, PermissionsMixin):
 
     def has_write_permission(self):
         return self.is_manager
+    
