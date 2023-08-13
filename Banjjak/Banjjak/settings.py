@@ -41,17 +41,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    #"taggit",
+    # "taggit",
     "rest_framework",
     "rest_framework.authtoken",
     "users",
     "posts",
     "accounts",
-    "likes",
+    "reviews",
     "losts",
     "founds",
     "requests",
     "userposts",
+    "likes",
 ]
 
 MIDDLEWARE = [
