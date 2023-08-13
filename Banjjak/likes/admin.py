@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import UserLike
+from .models import UserPostLike
 # Register your models here.
 
 
-@admin.register(UserLike)
+@admin.register(UserPostLike)
 class UserLikeModelAdmin(admin.ModelAdmin):
     pass

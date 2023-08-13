@@ -4,23 +4,23 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
-from .models import UserLike
+from .models import UserPostLike
 from posts.models import Post
 from .serializers import UserLikeSerializer
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_like_list(request):
+def list_user_like__post(request):
     user = request.user
-    user_likes = UserLike.objects.filter(user=user)
+    user_likes = UserPostLike.objects.filter(user=user)
     serializer = UserLikeSerializer(user_likes, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_user_like(request):
+def add_user_like_post(request):
     user = request.user
     post_id = request.data.get('id')
 
@@ -29,10 +29,10 @@ def add_user_like(request):
     except Post.DoesNotExist:
         return Response({"detail": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    if UserLike.objects.filter(user=user, post=post).exists():
+    if UserPostLike.objects.filter(user=user, post=post).exists():
         return Response({"detail": "관심목록에 이미 존재합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-    user_like = UserLike(user=user, post=post)
+    user_like = UserPostLike(user=user, post=post)
     user_like.save()
 
     serializer = UserLikeSerializer(user_like)
@@ -41,11 +41,11 @@ def add_user_like(request):
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def delete_user_like(request):
+def delete_user_like_post(request):
     user = request.user
     post_id = request.data.get('id')
 
-    like = get_object_or_404(UserLike, post=post_id, user=user)
+    like = get_object_or_404(UserPostLike, post=post_id, user=user)
     like.delete()
 
     return Response({"detail": "관심목록이 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)

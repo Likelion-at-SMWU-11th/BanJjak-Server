@@ -1,11 +1,11 @@
 from django.urls import path
 from . import views
-from .views import user_like_list, user_like_list, delete_user_like
+from .views import list_user_like__post, delete_user_like_post, add_user_like_post
 
 app_name = 'likes'
 
 urlpatterns = [
-    path('', user_like_list, name='user-likes-list'),
-    path('add/', user_like_list, name='user-likes-add'),  # 확인용
-    path('delete/', delete_user_like, name='user-likes-delete'),
+    path('', list_user_like__post, name='user-likes-list'),
+    path('add/', delete_user_like_post, name='user-likes-add'),  # 확인용
+    path('delete/', add_user_like_post, name='user-likes-delete'),
 ]
