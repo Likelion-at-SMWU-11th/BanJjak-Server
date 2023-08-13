@@ -5,7 +5,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'phone',]
+        fields = ['username', 'password', 'email', 'phone', 'profile']
         read_only_fields = ['email', 'password']
 
 
@@ -17,6 +17,12 @@ class UserPWSerializer(serializers.Serializer):
         if data['old_pw'] == data['new_pw']:
             raise serializers.ValidationError("입력한 비밀번호는 기존의 비밀번호와 다릅니다")
         return data
+
+
+class UserAgreeSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ['is_agree']
 
 
 class ManagerSerializer(serializers.ModelSerializer):
