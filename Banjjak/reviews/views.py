@@ -20,7 +20,7 @@ class CanDeleteReviewPermission(permissions.BasePermission):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewListSerializer
-    permission_classes = [IsAuthenticated, CanWriteReviewPermission]
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['review_type']  # 검색 필드 지정
 

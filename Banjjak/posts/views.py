@@ -30,7 +30,5 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAuthenticated, CanDeletePostPermission]
         return super().get_permissions()
 
-
-
     def perform_create(self, serializer):
         serializer.save(writer=self.request.user)
