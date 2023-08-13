@@ -5,6 +5,7 @@ from multiselectfield import MultiSelectField
 
 User = get_user_model()
 
+
 class Post(models.Model):
     TYPE_CHOICES = [
         ('dog', '개'),
@@ -21,7 +22,7 @@ class Post(models.Model):
         ('neutered', '중성화O'),
         ('notneutered', '중성화X'),
     ]
-    TAG_CHOICES=[
+    TAG_CHOICES = [
         ('1', '사람좋아'),
         ('2', '순딩이'),
         ('3', '사교적'),
@@ -49,7 +50,7 @@ class Post(models.Model):
         default='unknown',
         verbose_name="동물"
     )
-    kind=models.CharField(verbose_name="품종", max_length=15, default="미확인")
+    kind = models.CharField(verbose_name="품종", max_length=15, default="미확인")
     weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     gender = models.CharField(
@@ -64,11 +65,13 @@ class Post(models.Model):
         default='unknown',
         verbose_name='중성화'
     )
-    
-    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
+
+    hashtags = MultiSelectField(
+        choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
     content = models.CharField(
         max_length=70, verbose_name='관리자 한마디', null=False, default="한마디 없음")
-    alert = models.TextField(verbose_name='특이사항', null=False, default="특이사항 없음")
+    alert = models.TextField(
+        verbose_name='특이사항', null=False, default="특이사항 없음")
     writer = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
@@ -76,11 +79,11 @@ class Post(models.Model):
         null=True,
         blank=True
     )
-    
-    #tags = TaggableManager()
-    
+
+    # tags = TaggableManager()
+
     def __str__(self):
-        return self.title
+        return self.name
 
     # 태그 선택
     # created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)

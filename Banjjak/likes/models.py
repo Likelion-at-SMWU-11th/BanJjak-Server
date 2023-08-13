@@ -5,6 +5,7 @@ from founds.models import Found
 from losts.models import Lost
 from reviews.models import Review
 from requests.models import Request
+from userposts.models import Userpost
 
 
 class UserPostLike(models.Model):
@@ -13,6 +14,14 @@ class UserPostLike(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.post}'
+
+
+class UserUserPostLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    userpost = models.ForeignKey(Userpost, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user} - {self.userpost}'
 
 
 class UserFoundLike(models.Model):

@@ -5,13 +5,15 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
-from .models import UserPostLike, UserFoundLike, UserLostLike, UserReviewLike, UserRequestLike
+from .models import UserPostLike, UserFoundLike, UserLostLike, UserReviewLike, UserRequestLike, UserUserPostLike
 from posts.models import Post
 from founds.models import Found
 from losts.models import Lost
 from reviews.models import Review
 from requests.models import Request
-from .serializers import UserPostSerializer, UserFoundSerializer, UserLostSerializer, UserReviewSerializer, UserRequestSerializer
+from userposts.models import Userpost
+from .serializers import UserPostSerializer, UserUserpostSerializer, UserFoundSerializer, UserLostSerializer, UserReviewSerializer, UserRequestSerializer
+from .serializers import PostSerializer, UserpostSerializer, FoundSerializer, LostSerializer, ReviewSerializer, RequestSerializer
 
 
 # 전체 데이터 조회
@@ -20,20 +22,28 @@ from .serializers import UserPostSerializer, UserFoundSerializer, UserLostSerial
 def list_user_likes(request):
     user = request.user
     user_post_likes = UserPostLike.objects.filter(user=user)
+    user_userpost_likes = UserUserPostLike.objects.filter(user=user)
     user_found_likes = UserFoundLike.objects.filter(user=user)
     user_lost_likes = UserLostLike.objects.filter(user=user)
+    user_request_likes = UserRequestLike.objects.filter(user=user)
     user_review_likes = UserReviewLike.objects.filter(user=user)
 
     post_likes_seriallezer = UserPostSerializer(user_post_likes, many=True)
+    userpost_likes_serializer = UserUserpostSerializer(
+        user_userpost_likes, many=True)
     found_likes_serializer = UserFoundSerializer(user_found_likes, many=True)
     lost_likes_serializer = UserLostSerializer(user_lost_likes, many=True)
+    user_request_serializer = UserRequestSerializer(
+        user_request_likes, many=True)
     review_likes_serializer = UserReviewSerializer(
         user_review_likes, many=True)
 
     data = {
         'post_likes': post_likes_seriallezer.data,
+        'userpost_likes': userpost_likes_serializer.data,
         'found_likes': found_likes_serializer.data,
         'lost_likes': lost_likes_serializer.data,
+        'request_likes': user_request_serializer.data,
         'review_likes': review_likes_serializer.data,
     }
 
@@ -41,15 +51,6 @@ def list_user_likes(request):
 
 
 # post
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def list_user_like_post(request):
-    user = request.user
-    user_likes = UserPostLike.objects.filter(user=user)
-    serializer = UserPostSerializer(user_likes, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_user_like_post(request):
@@ -83,23 +84,38 @@ def delete_user_like_post(request):
     return Response({"detail": "관심목록이 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
 
 
-# found/lost
-@api_view(['GET'])
+# userpost
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def list_user_like_found(request):
+def add_user_like_userpost(request):
     user = request.user
-    user_found_likes = UserFoundLike.objects.filter(user=user)
-    user_lost_likes = UserLostLike.objects.filter(user=user)
+    post_id = request.data.get('id')
 
-    found_likes_serializer = UserFoundSerializer(user_found_likes, many=True)
-    lost_likes_serializer = UserLostSerializer(user_lost_likes, many=True)
+    try:
+        post = Userpost.objects.get(id=post_id)
+    except Userpost.DoesNotExist:
+        return Response({"detail": "Userpost not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    data = {
-        'found_likes': found_likes_serializer.data,
-        'lost_likes': lost_likes_serializer.data,
-    }
+    if UserUserPostLike.objects.filter(user=user, post=post).exists():
+        return Response({"detail": "관심목록에 이미 존재합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response(data, status=status.HTTP_200_OK)
+    user_like = UserUserPostLike(user=user, post=post)
+    user_like.save()
+
+    serializer = UserUserpostSerializer(user_like)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user_like_post(request):
+    user = request.user
+    post_id = request.data.get('id')
+
+    like = get_object_or_404(UserUserPostLike, post=post_id, user=user)
+    like.delete()
+
+    return Response({"detail": "관심목록이 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
 
 
 # found
@@ -137,18 +153,6 @@ def delete_user_like_found(request):
 
 
 # lost
-"""
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def list_user_like_lost(request):
-    user = request.user
-    user_likes = UserLostLike.objects.filter(user=user)
-    serializer = UserLostSerializer(user_likes, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-    """
-
-
-# lost
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_user_like_lost(request):
@@ -183,15 +187,6 @@ def delete_user_like_lost(request):
 
 
 # request
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def list_user_like_request(request):
-    user = request.user
-    user_likes = UserRequestLike.objects.filter(user=user)
-    serializer = UserRequestSerializer(user_likes, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_user_like_request(request):
@@ -199,7 +194,7 @@ def add_user_like_request(request):
     request_id = request.data.get('id')
 
     try:
-        request = Lost.objects.get(id=request_id)
+        request = Request.objects.get(id=request_id)
     except Request.DoesNotExist:
         return Response({"detail": "Request not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -209,7 +204,7 @@ def add_user_like_request(request):
     user_like = UserRequestLike(user=user, request=request)
     user_like.save()
 
-    serializer = UserLostSerializer(user_like)
+    serializer = UserRequestSerializer(user_like)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -219,22 +214,13 @@ def delete_user_like_request(request):
     user = request.user
     request_id = request.data.get('id')
 
-    like = get_object_or_404(UserLostLike, request=request_id, user=user)
+    like = get_object_or_404(UserRequestLike, request=request_id, user=user)
     like.delete()
 
     return Response({"detail": "관심목록이 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
 
 
 # review
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def list_user_like_review(request):
-    user = request.user
-    user_likes = UserReviewLike.objects.filter(user=user)
-    serializer = UserReviewSerializer(user_likes, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_user_like_review(request):
@@ -268,7 +254,62 @@ def delete_user_like_review(request):
     return Response({"detail": "관심목록이 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_user(request):
+    user = request.user
+    user_posts = Userpost.objects.filter(writer=user)
+    user_userposts = Userpost.objects.filter(writer=user)
+    user_losts = Lost.objects.filter(writer=user)
+    user_founds = Found.objects.filter(writer=user)
+    user_request = Request.objects.filter(writer=user)
+    user_review = Review.objects.filter(writer=user)
+
+    post_serializer = PostSerializer(user_posts, many=True)
+    userpost_serialzer = UserpostSerializer(user_userposts, many=True)
+    lost_serializer = LostSerializer(user_losts, many=True)
+    found_serializer = FoundSerializer(user_founds, many=True)
+    request_serializer = RequestSerializer(user_request, many=True)
+    review_serializer = ReviewSerializer(user_review, many=True)
+
+    data = {
+        'user_posts': post_serializer.data,
+        'user_userposts': userpost_serialzer.data,
+        'user_losts': lost_serializer.data,
+        'user_founds': found_serializer.data,
+        'user_request': request_serializer.data,
+        'review_request': review_serializer.data,
+    }
+
+    return Response(data)
+
+
 """
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_user_like_post(request):
+    user = request.user
+    user_likes = UserPostLike.objects.filter(user=user)
+    serializer = UserPostSerializer(user_likes, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_user_like_found(request):
+    user = request.user
+    user_found_likes = UserFoundLike.objects.filter(user=user)
+    user_lost_likes = UserLostLike.objects.filter(user=user)
+
+    found_likes_serializer = UserFoundSerializer(user_found_likes, many=True)
+    lost_likes_serializer = UserLostSerializer(user_lost_likes, many=True)
+
+    data = {
+        'found_likes': found_likes_serializer.data,
+        'lost_likes': lost_likes_serializer.data,
+    }
+
+    return Response(data, status=status.HTTP_200_OK)
+
 
 from django.shortcuts import render
 from rest_framework import generics, status
