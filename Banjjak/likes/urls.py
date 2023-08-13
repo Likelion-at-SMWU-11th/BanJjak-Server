@@ -1,12 +1,13 @@
 from django.urls import path
 from . import views
-from .views import list_user_likes, list_user_like_post, delete_user_like_post, add_user_like_post, list_user_like_found
-from .views import list_user_like_review, delete_user_like_found, delete_user_like_lost, delete_user_like_review, add_user_like_found, add_user_like_lost, add_user_like_review
-from .views import list_user_like_request, delete_user_like_request, add_user_like_request
+from .views import list_user_likes, delete_user_like_post, add_user_like_post
+from .views import delete_user_like_found, delete_user_like_lost, delete_user_like_review, add_user_like_found, add_user_like_lost, add_user_like_review
+from .views import delete_user_like_request, add_user_like_request, list_user
 
 app_name = 'likes'
 
 urlpatterns = [
+    path('my/', list_user, name='list-user'),
     path('', list_user_likes, name='user-likes-list'),  # 모든 데이터 조회
     # posts
     # path('posts/', list_user_like_post, name='user-likes-post'),
