@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import UserLike
+from .models import UserPostLike
 
 
 class UserLikeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserLike
+        model = UserPostLike
         fields = '__all__'
