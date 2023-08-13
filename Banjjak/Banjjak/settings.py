@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "requests",
     "userposts",
     "likes",
+    "reviews",
 ]
 
 MIDDLEWARE = [
