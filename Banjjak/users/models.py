@@ -12,6 +12,7 @@ class User(AbstractUser, PermissionsMixin):
     is_manager = models.BooleanField(default=False)  # 반려인-False, 관리자=True
     # 입양 절차 동의/동의-True, 비동의 - False
     is_agree = models.BooleanField(default=False)
+    profile = models.ImageField(verbose_name='프로필', blank=True)
 
     USERNAME_FIELD = 'email'  # 이메일을 메인키로 사용
     REQUIRED_FIELDS = ['username']  # 반려인-닉네임, 관리자-보호소이름
@@ -28,6 +29,6 @@ class User(AbstractUser, PermissionsMixin):
 
     def has_write_permission(self):
         return self.is_manager
-    
+
     def has_write_permission_user(self):
-         return self.is_manager==0 
+        return self.is_manager == 0
