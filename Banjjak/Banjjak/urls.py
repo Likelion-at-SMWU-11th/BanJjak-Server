@@ -30,6 +30,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from posts.views import PostViewSet
+from userposts.views import UserpostViewSet
 from losts.views import LostViewSet
 from requests.views import RequestViewSet
 from founds.views import FoundViewSet
@@ -38,6 +39,7 @@ from django.conf import settings
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
+router.register(r'userposts', UserpostViewSet)
 router.register(r'losts', LostViewSet)
 router.register(r'founds', FoundViewSet)
 router.register(r'requests', RequestViewSet)
