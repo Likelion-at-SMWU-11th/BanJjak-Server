@@ -20,6 +20,7 @@ class CanDeleteReviewPermission(permissions.BasePermission):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewListSerializer
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['review_type']  # 검색 필드 지정
 
@@ -47,6 +48,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Review.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    
 
     def perform_create(self, serializer):
         serializer.save(writer=self.request.user)

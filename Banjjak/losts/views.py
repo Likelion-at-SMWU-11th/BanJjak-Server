@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from .models import Lost
 from .serializers import LostListSerializer
 
+class CanWritePostPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.has_write_permission_user()
+    
 class CanEditPostPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.writer == request.user
@@ -19,7 +23,9 @@ class LostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # 로그인 필수 설정
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update']:
+        if self.action in ['create']:
+            self.permission_classes = [IsAuthenticated, CanWritePostPermission]
+        elif self.action in ['update', 'partial_update']:
             self.permission_classes = [IsAuthenticated, CanEditPostPermission]
         elif self.action == 'destroy':
             self.permission_classes = [IsAuthenticated, CanDeletePostPermission]
