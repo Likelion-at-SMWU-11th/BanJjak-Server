@@ -19,6 +19,12 @@ class UserPWSerializer(serializers.Serializer):
         return data
 
 
+class UserAgreeSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ['is_agree']
+
+
 class ManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

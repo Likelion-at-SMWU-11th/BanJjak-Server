@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile
+from .views import userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree
 
 app_name = 'users'
 
@@ -9,6 +9,7 @@ urlpatterns = [
          name="change-user-password"),
     path("changeuserinfo/profile/", update_profile,
          name="change-user-profile"),
+    path("changeuserinfo/isagree/", userChangeAgree, name="change-user-agree"),
     path("changemanagerinfo/", ManagerChange, name="change-manager-info"),
     path("changemanagerinfo/pw/", managerChangePassword,
          name="change-manager-password"),

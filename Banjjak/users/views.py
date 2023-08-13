@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
-from .serializers import UserSerializer, ManagerSerializer, UserPWSerializer, ManagerPWSerializer
+from .serializers import UserSerializer, ManagerSerializer, UserPWSerializer, ManagerPWSerializer, UserAgreeSerializer
 
 
 @api_view(['GET', 'PUT'])
@@ -58,6 +58,21 @@ def userChangePassword(request):
         return Response({"detail": "Password successfully updated."}, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def userChangeAgree(request):
+    user = request.user
+    agree = request.data.get('is_agree')
+
+    if not agree:
+        return Response({'detail': 'No profile image provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.is_agree = agree
+    user.save()
+
+    return Response({'detail': 'Is_agree updated successfully'}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'PUT'])
