@@ -27,6 +27,7 @@ SECRET_KEY = "django-insecure-rpehhlys(g9bimo&e)z(hl(=bazhsm2nax6@(!-#&_@#*_t7v1
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '*'
     # 운영 모드인 경우 반드시 서버의 IP나 도메인 지정
     # 개발 모드인 경우 값을 지정하지 않아도 ['locathost', '127.0.0.1']로 간주
 ]
@@ -44,6 +45,9 @@ INSTALLED_APPS = [
     # "taggit",
     "rest_framework",
     "rest_framework.authtoken",
+    "corsheaders",
+    'allauth',
+    'allauth.account',
     "users",
     "posts",
     "accounts",
@@ -56,6 +60,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -63,6 +68,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:3000', 'http://localhost:3000')
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # 리액트 애플리케이션의 도메인
+    # 다른 도메인들도 추가 가능
 ]
 
 ROOT_URLCONF = "Banjjak.urls"
@@ -159,3 +171,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ]
 }
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # 기본 백엔드 추가
+    'django.contrib.auth.backends.ModelBackend',
+]
