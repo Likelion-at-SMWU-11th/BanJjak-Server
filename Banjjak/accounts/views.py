@@ -113,8 +113,8 @@ def UserSignin(request):
 @permission_classes([AllowAny])
 @csrf_exempt
 def UserLogin(request):
-    email = request.POST['email']
-    password = request.POST['password']
+    email = request.data.get('email')
+    password = request.data.get('password')
     remember_me = request.data.get('remember_me', False)  # 자동 로그인
     remember_id = request.data.get('remember_id', False)  # 아이디 저장
 
@@ -132,6 +132,7 @@ def UserLogin(request):
         login(request, user)
         token, _ = Token.objects.get_or_create(user=user)
         response.data['token'] = token.key
+        # print("!!!!!!!!!!")
         return response
     else:
         return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
