@@ -6,6 +6,7 @@ from .models import Post
 from .serializers import PostListSerializer, PostSerializer
 from rest_framework.decorators import action
 
+
 class CanWritePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.has_write_permission()
@@ -30,7 +31,8 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        animal_type = self.request.query_params.get('animal_type')  # URL 파라미터로 받은 카테고리
+        animal_type = self.request.query_params.get(
+            'animal_type')  # URL 파라미터로 받은 카테고리
         if animal_type:
             queryset = queryset.filter(animal_type=animal_type)
         return queryset
@@ -62,5 +64,7 @@ class PostViewSet(viewsets.ModelViewSet):
 def list_user_posts(request):
     user = request.user
     user_posts = Post.objects.filter(writer=user)
+    print(user_posts)
     serializer = PostSerializer(user_posts, many=True)
+    print(serializer)
     return Response(serializer.data, status=status.HTTP_200_OK)
