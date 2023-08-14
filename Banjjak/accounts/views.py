@@ -92,7 +92,7 @@ from rest_framework.decorators import api_view, permission_classes
 from users.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout
 
 
 @api_view(['POST'])
@@ -135,6 +135,14 @@ def UserLogin(request):
         return response
     else:
         return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def UserLogout(request):
+    logout(request)
+    return Response({'detail': 'Logged out'}, status=status.HTTP_200_OK)
 
     """
     if request.method == 'POST':
