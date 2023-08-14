@@ -8,7 +8,7 @@ class User(AbstractUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=200)
     phone = models.CharField(verbose_name="전화번호", max_length=11)
-    address = models.CharField(max_length=500)
+    address = models.CharField(max_length=500, blank=True)
     is_manager = models.BooleanField(default=False)  # 반려인-False, 관리자=True
     # 입양 절차 동의/동의-True, 비동의 - False
     is_agree = models.BooleanField(default=False)

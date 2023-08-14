@@ -97,6 +97,7 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def UserSignin(request):
     if request.method == 'POST':
         serializer = UserCreateSerializer(data=request.data)
@@ -172,6 +173,7 @@ def UserLogout(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def ManagerSignin(request):
     if request.method == 'POST':
         serializer = ManagerCreateSerializer(data=request.data)
@@ -186,6 +188,7 @@ def ManagerSignin(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def ManagerLogin(request):
     email = request.POST['email']
     password = request.POST['password']
