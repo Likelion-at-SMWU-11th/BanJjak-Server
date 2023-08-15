@@ -1,11 +1,23 @@
 from django.shortcuts import render
 from django.contrib.auth import update_session_auth_hash
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer, ManagerSerializer, UserPWSerializer, ManagerPWSerializer, UserAgreeSerializer
+
+
+class TokenUsernameView(APIView):
+    def get(self, request):
+        token = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[
+            1]  # Extract token from header
+        user = Token.objects.get(key=token).user
+
+        serializer = ManagerSerializer(user)
+        return Response(serializer.data)
 
 
 @api_view(['GET', 'PUT'])
