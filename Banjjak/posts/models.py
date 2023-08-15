@@ -41,7 +41,7 @@ class Post(models.Model):
     ]
 
     name = models.TextField(verbose_name="공고동물 이름", null=False)
-    image = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
+    image1 = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
     image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     animal_type = models.CharField(
@@ -67,7 +67,7 @@ class Post(models.Model):
     )
 
     hashtags = MultiSelectField(
-        choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
+        choices=TAG_CHOICES, max_choices=5, max_length=50, null=True)
     content = models.CharField(
         max_length=70, verbose_name='관리자 한마디', null=False, default="한마디 없음")
     alert = models.TextField(
