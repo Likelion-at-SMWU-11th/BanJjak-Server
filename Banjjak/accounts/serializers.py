@@ -37,14 +37,16 @@ class ManagerCreateSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
-    address = serializers.CharField(required=True)
+    address1 = serializers.CharField(required=True)
+    address2 = serializers.CharField(required=True)
     phone = serializers.CharField(required=True)
 
     def create(self, validated_data):
         user = User.objects.create(
             email=validated_data['email'],
             username=validated_data['username'],
-            address=validated_data['address'],
+            address1=validated_data['address1'],
+            address2=validated_data['address2'],
             phone=validated_data['phone'],
             is_manager=True,
         )
