@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree
+from .views import userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree, TokenUsernameView
 
 app_name = 'users'
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path("changemanagerinfo/", ManagerChange, name="change-manager-info"),
     path("changemanagerinfo/pw/", managerChangePassword,
          name="change-manager-password"),
+    path('get_username/', TokenUsernameView.as_view(), name='get-username'),
 ]
