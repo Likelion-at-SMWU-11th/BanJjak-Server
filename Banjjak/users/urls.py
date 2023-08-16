@@ -1,9 +1,11 @@
 from django.urls import path
-from .views import userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree, TokenUsernameView
+from .views import userChangeProfile, userGet, userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree, TokenUsernameView
 
 app_name = 'users'
 
 urlpatterns = [
+    path("getUserInfo/", userGet, name="get-user"),
+    path("userChangeProfile/", userChangeProfile, name="userChangeProfile"),
     path("changeuserinfo/", userChange, name="change-user-info"),
     path("changeuserinfo/pw/", userChangePassword,
          name="change-user-password"),

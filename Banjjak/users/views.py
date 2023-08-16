@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth import update_session_auth_hash
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
+from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UserSerializer, ManagerSerializer, UserPWSerializer, ManagerPWSerializer, UserAgreeSerializer
 
 
@@ -20,16 +21,37 @@ class TokenUsernameView(APIView):
         return Response(serializer.data)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def userChange(request):
+def userGet(request):
     user = request.user
 
     if request.method == 'GET' and not user.is_manager:
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    elif request.method == 'PUT' and not user.is_manager:
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def userChange(request):
+    user = request.user
+
+    if request.method == 'PUT' and not user.is_manager:
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'detail': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['PUT'])
+@parser_classes([MultiPartParser, FormParser])
+@permission_classes([IsAuthenticated])
+def userChangeProfile(request):
+    user = request.user
+
+    if request.method == 'PUT' and not user.is_manager:
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
