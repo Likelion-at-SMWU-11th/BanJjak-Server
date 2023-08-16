@@ -1,11 +1,17 @@
 from rest_framework import serializers
 from .models import User
+import base64
+from rest_framework import serializers
+from django.core.files import File
 
 
 class UserSerializer(serializers.ModelSerializer):
+    profile = serializers.ImageField(use_url=True)
+
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'phone', 'profile']
+        fields = ['username', 'password', 'email',
+                  'phone', 'profile']
         read_only_fields = ['email', 'password']
 
 

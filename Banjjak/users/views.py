@@ -27,7 +27,7 @@ def userGet(request):
     user = request.user
 
     if request.method == 'GET' and not user.is_manager:
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
 
