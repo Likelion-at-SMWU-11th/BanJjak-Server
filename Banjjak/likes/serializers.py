@@ -34,7 +34,7 @@ class UserLostSerializer(serializers.ModelSerializer):
 
 class UserRequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model: UserRequestLike
+        model = UserRequestLike
         fields = '__all__'
 
 
