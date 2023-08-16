@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .models import Post
 from .serializers import PostListSerializer, PostSerializer
 from rest_framework.decorators import action
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class CanWritePostPermission(permissions.BasePermission):
@@ -56,8 +58,27 @@ class PostViewSet(viewsets.ModelViewSet):
         except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+    @action(detail=True, methods=['POST'])
     def perform_create(self, serializer):
-        serializer.save(writer=self.request.user)
+        if serializer.is_valid():
+            serializer.validated_data['writer'] = self.request.user
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)  # 에러 출력
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_post(request):
+    if request.method == 'POST':
+        serializer = PostSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
