@@ -47,7 +47,7 @@ class Post(models.Model):
     animal_type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name="동물"
     )
     kind = models.CharField(verbose_name="품종", max_length=15, default="미확인")
@@ -56,13 +56,13 @@ class Post(models.Model):
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='성별'
     )
     is_neutered = models.CharField(
         max_length=11,  # 'notneutered' 가 가장 긴 값이므로 그에 맞춰 조정
         choices=NEUTERED_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='중성화'
     )
 
