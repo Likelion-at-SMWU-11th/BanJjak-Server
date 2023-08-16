@@ -5,18 +5,19 @@ User = get_user_model()
 
 class Found(models.Model):
     TYPE_CHOICES = [
-        ('dog', '개'),
-        ('cat', '고양이'),
-        ('etc', '기타'),
+        ('개', '개'),
+        ('고양이', '고양이'),
+        ('기타', '기타'),
     ]
     GENDER_CHOICES = [
-        ('unknown', '미확인'),
-        ('female', '암컷'),
-        ('male', '수컷'),
+        ('미확인', '미확인'),
+        ('암컷', '암컷'),
+        ('수컷', '수컷'),
     ]
     NEUTERED_CHOICES = [
-        ('neutered', 'O'),
-        ('unknown', 'X'),
+        ('미확인', '미확인'),
+        ('중성화O', '중성화O'),
+        ('중성화X', '중성화X'),
     ]
 
     found_date=models.CharField(max_length=15, verbose_name="실종 날짜 (ex:2023-08-11)", null=False)
@@ -28,13 +29,13 @@ class Found(models.Model):
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='성별'
     )
     is_neutered = models.CharField(
         max_length=11,  # 'notneutered' 가 가장 긴 값이므로 그에 맞춰 조정
         choices=NEUTERED_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='중성화 여부'
     )
 
