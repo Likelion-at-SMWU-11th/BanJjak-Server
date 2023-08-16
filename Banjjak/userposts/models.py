@@ -6,20 +6,21 @@ User = get_user_model()
 
 class Userpost(models.Model):
     TYPE_CHOICES = [
-        ('dog', '개'),
-        ('cat', '고양이'),
-        ('etc', '기타'),
+        ('개', '개'),
+        ('고양이', '고양이'),
+        ('기타', '기타'),
     ]
     GENDER_CHOICES = [
-        ('unknown', '미확인'),
-        ('female', '암컷'),
-        ('male', '수컷'),
+        ('미확인', '미확인'),
+        ('암컷', '암컷'),
+        ('수컷', '수컷'),
     ]
     NEUTERED_CHOICES = [
-        ('unknown', '미확인'),
-        ('neutered', '중성화O'),
-        ('notneutered', '중성화X'),
+        ('미확인', '미확인'),
+        ('중성화O', '중성화O'),
+        ('중성화X', '중성화X'),
     ]
+    
     TAG_CHOICES=[
         ('1', '사람좋아'),
         ('2', '순딩이'),
@@ -44,20 +45,20 @@ class Userpost(models.Model):
     animal_type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name="동물"
     )
     kind=models.CharField(verbose_name="품종", max_length=15, default="미확인")
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='성별'
     )
     is_neutered = models.CharField(
         max_length=11,  # 'notneutered' 가 가장 긴 값이므로 그에 맞춰 조정
         choices=NEUTERED_CHOICES,
-        default='unknown',
+        default='미확인',
         verbose_name='중성화'
     )
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")

@@ -6,14 +6,14 @@ User = get_user_model()
 
 class Review(models.Model):
     Category_CHOICES = [
-        ('adopt', '입양'),
-        ('reunion', '재회'),
+        ('입양', '입양'),
+        ('재회', '재회'),
     ]
 
     review_type = models.CharField(
         max_length=8,
         choices=Category_CHOICES,
-        default='adopt',
+        default='재회',
         verbose_name='카테고리 구분'
     )
 
