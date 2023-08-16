@@ -64,9 +64,7 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer.validated_data['writer'] = self.request.user
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)  # 에러 출력
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -74,11 +72,13 @@ class PostViewSet(viewsets.ModelViewSet):
 def create_post(request):
     if request.method == 'POST':
         serializer = PostSerializer(data=request.data)
-
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(serializer.errors)    
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

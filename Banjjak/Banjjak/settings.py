@@ -177,3 +177,5 @@ AUTHENTICATION_BACKENDS = [
     # 기본 백엔드 추가
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']

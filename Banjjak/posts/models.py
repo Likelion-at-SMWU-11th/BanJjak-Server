@@ -41,7 +41,7 @@ class Post(models.Model):
     ]
 
     name = models.TextField(verbose_name="공고동물 이름", null=False)
-    image1 = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
+    image1 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True, upload_to="")
     image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     animal_type = models.CharField(
