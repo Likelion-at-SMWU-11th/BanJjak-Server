@@ -54,8 +54,4 @@ urlpatterns = [
     path("posts/", include('posts.urls', namespace="posts")),
     path("likes/", include("likes.urls", namespace="likes")),
     path("users/", include('users.urls', namespace="users")),
-]
-# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
