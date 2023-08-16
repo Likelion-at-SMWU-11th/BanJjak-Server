@@ -8,19 +8,19 @@ User = get_user_model()
 
 class Post(models.Model):
     TYPE_CHOICES = [
-        ('dog', '개'),
-        ('cat', '고양이'),
-        ('etc', '기타'),
+        ('개', '개'),
+        ('고양이', '고양이'),
+        ('기타', '기타'),
     ]
     GENDER_CHOICES = [
-        ('unknown', '미확인'),
-        ('female', '암컷'),
-        ('male', '수컷'),
+        ('미확인', '미확인'),
+        ('암컷', '암컷'),
+        ('수컷', '수컷'),
     ]
     NEUTERED_CHOICES = [
-        ('unknown', '미확인'),
-        ('neutered', '중성화O'),
-        ('notneutered', '중성화X'),
+        ('미확인', '미확인'),
+        ('중성화O', '중성화O'),
+        ('중성화X', '중성화X'),
     ]
     TAG_CHOICES = [
         ('1', '사람좋아'),
