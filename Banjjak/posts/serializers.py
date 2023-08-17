@@ -5,6 +5,7 @@ from .models import Post
 
 class PostSerializer(ModelSerializer):
     hashtags = serializers.MultipleChoiceField(choices=Post.TAG_CHOICES)
+    writer = serializers.CharField(source='writer.username')
     # image1 = serializers.ImageField(use_url=True)
     class Meta:
         model = Post
