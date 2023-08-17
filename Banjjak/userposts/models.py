@@ -64,11 +64,11 @@ class Userpost(models.Model):
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
     
-    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=False)
+    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=True)
     content = models.CharField(
         max_length=70, verbose_name='임보자 한마디', null=False, default="한마디 없음")
     alert = models.TextField(verbose_name='특이사항', null=False, default="특이사항 없음")
-    image = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
+    image1 = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
     image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     writer = models.ForeignKey(
@@ -82,4 +82,4 @@ class Userpost(models.Model):
     #tags = TaggableManager()
     
     def __str__(self):
-        return self.title
+        return self.name
