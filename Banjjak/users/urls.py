@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import userChangeProfile, userGet, userChange, ManagerChange, userChangePassword, managerChangePassword, update_profile, userChangeAgree, TokenUsernameView
-
+from django.conf.urls.static import static
+from django.conf import settings
 app_name = 'users'
 
 urlpatterns = [
