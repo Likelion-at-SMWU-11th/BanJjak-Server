@@ -6,9 +6,9 @@ User = get_user_model()
 
 class Userpost(models.Model):
     TYPE_CHOICES = [
-        ('개', '개'),
-        ('고양이', '고양이'),
-        ('기타', '기타'),
+        ('dog', '개'),
+        ('cat', '고양이'),
+        ('etc', '기타'),
     ]
     GENDER_CHOICES = [
         ('미확인', '미확인'),
