@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 # Create your models here.
 User = get_user_model()
@@ -29,7 +30,8 @@ class Review(models.Model):
     )
     image1 = models.ImageField(verbose_name='사진(선택)', null=False, blank=True)
     image2 = models.ImageField(verbose_name='사진(선택)', null=True, blank=True)
-    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+    created_at = models.DateTimeField(
+        verbose_name='작성일', default=timezone.datetime.now)
 
     def __str__(self):
         return self.title

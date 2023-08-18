@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from multiselectfield import MultiSelectField
+from django.utils import timezone
 User = get_user_model()
 
 
@@ -20,7 +21,6 @@ class Request(models.Model):
         ('중성화O', '중성화O'),
         ('중성화X', '중성화X'),
     ]
-    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
     contact = models.TextField(verbose_name="연락처", null=False, default="미입력")
     name = models.TextField(verbose_name="이름", null=False, default="미입력")
     animal_type = models.CharField(
@@ -63,7 +63,8 @@ class Request(models.Model):
 
     image = models.ImageField(verbose_name='사진', null=False, blank=True)
     image2 = models.ImageField(verbose_name='사진', null=True, blank=True)
-
+    created_at = models.DateTimeField(
+        verbose_name='작성일', default=timezone.datetime.now)
     # 태그 선택
     # created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
     # view_count = models.IntegerField(verbose_name='조회수', default=0)

@@ -82,10 +82,10 @@ def userChangePassword(request):
     serializer = UserPWSerializer(data=request.data)
 
     if serializer.is_valid():
+
         if not user.check_password(serializer.validated_data['old_pw']):
             return Response({"detail": "현재 비밀번호와 다름"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Set the new password and save the user
         user.set_password(serializer.validated_data['new_pw'])
         user.save()
 
@@ -103,7 +103,7 @@ def userChangeAgree(request):
     if not agree:
         return Response({'detail': 'No profile image provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user.is_agree = agree
+    user.is_agree = True
     user.save()
 
     return Response({'detail': 'Is_agree updated successfully'}, status=status.HTTP_200_OK)

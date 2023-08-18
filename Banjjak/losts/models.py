@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 User = get_user_model()
 
 
@@ -58,7 +58,8 @@ class Lost(models.Model):
         verbose_name='사진(필수)', null=True, blank=True, upload_to="")
     image2 = models.ImageField(
         verbose_name='사진(선택)', null=True, blank=True, upload_to="")
-    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+    created_at = models.DateTimeField(
+        verbose_name='작성일', default=timezone.datetime.now)
 
     def __str__(self):
         return self.title

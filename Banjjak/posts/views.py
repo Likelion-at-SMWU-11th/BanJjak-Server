@@ -41,6 +41,8 @@ class PostViewSet(viewsets.ModelViewSet):
             'animal_type')  # URL 파라미터로 받은 카테고리
         if animal_type:
             queryset = queryset.filter(animal_type=animal_type)
+        # elif self.selectedSpecies:
+        #     queryset = queryset.filter(animal_type=self.selectedSpecies)
         return queryset
 
     def get_permissions(self):
@@ -80,7 +82,7 @@ def create_post(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print(serializer.errors)    
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

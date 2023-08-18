@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from multiselectfield import MultiSelectField
 
 User = get_user_model()
@@ -82,8 +83,8 @@ class Userpost(models.Model):
         null=True,
         blank=True
     )
-    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
-
+    created_at = models.DateTimeField(
+        verbose_name='작성일', default=timezone.datetime.now)
     # tags = TaggableManager()
 
     def __str__(self):

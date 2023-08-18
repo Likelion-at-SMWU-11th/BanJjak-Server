@@ -35,7 +35,6 @@ class ManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'password', 'email', 'phone',]
-        read_only_fields = ['username']
 
 
 class ManagerPWSerializer(serializers.Serializer):
