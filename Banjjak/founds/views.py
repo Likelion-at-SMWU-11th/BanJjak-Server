@@ -4,7 +4,11 @@ from rest_framework.response import Response
 from .models import Found
 from .serializers import FoundListSerializer
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 
+class NoPagination(PageNumberPagination):
+    page_size = 100  # 원하는 페이지 크기로 설정
+    
 class CanWritePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.has_write_permission_user()
@@ -18,9 +22,10 @@ class CanDeletePostPermission(permissions.BasePermission):
         return obj.writer == request.user
 
 class FoundViewSet(viewsets.ModelViewSet):
-    queryset = Found.objects.all()
+    queryset = Found.objects.order_by('-id')
     serializer_class = FoundListSerializer
     permission_classes = [IsAuthenticated]  # 로그인 필수 설정
+    pagination_class = NoPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()

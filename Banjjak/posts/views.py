@@ -1,4 +1,3 @@
-
 from rest_framework import viewsets, permissions, status, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
@@ -8,7 +7,10 @@ from .serializers import PostListSerializer, PostSerializer
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.pagination import PageNumberPagination
 
+class NoPagination(PageNumberPagination):
+    page_size = 100  # 원하는 페이지 크기로 설정
 
 class CanWritePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -26,11 +28,12 @@ class CanDeletePostPermission(permissions.BasePermission):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.order_by('-id')
     serializer_class = PostListSerializer
     permission_classes = [IsAuthenticated]  # 로그인 필수 설정
     filter_backends = [filters.SearchFilter]
     search_fields = ['animal_type']  # 검색 필드 지정
+    pagination_class = NoPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
