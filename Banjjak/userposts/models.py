@@ -4,6 +4,7 @@ from multiselectfield import MultiSelectField
 
 User = get_user_model()
 
+
 class Userpost(models.Model):
     TYPE_CHOICES = [
         ('dog', '개'),
@@ -20,8 +21,8 @@ class Userpost(models.Model):
         ('중성화O', '중성화O'),
         ('중성화X', '중성화X'),
     ]
-    
-    TAG_CHOICES=[
+
+    TAG_CHOICES = [
         ('1', '사람좋아'),
         ('2', '순딩이'),
         ('3', '사교적'),
@@ -39,8 +40,9 @@ class Userpost(models.Model):
         ('15', '실외배변'),
     ]
 
-    address=models.TextField(verbose_name="보호센터", null=False, default="미입력") #디폴트 수정! 
-    contact=models.TextField(verbose_name="연락처", null=False, default="미입력")
+    address = models.TextField(
+        verbose_name="보호센터", null=False, default="미입력")  # 디폴트 수정!
+    contact = models.TextField(verbose_name="연락처", null=False, default="미입력")
     name = models.TextField(verbose_name="공고동물 이름", null=False)
     animal_type = models.CharField(
         max_length=10,
@@ -48,7 +50,7 @@ class Userpost(models.Model):
         default='미확인',
         verbose_name="동물"
     )
-    kind=models.CharField(verbose_name="품종", max_length=15, default="미확인")
+    kind = models.CharField(verbose_name="품종", max_length=15, default="미확인")
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
@@ -63,11 +65,13 @@ class Userpost(models.Model):
     )
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
-    
-    hashtags=MultiSelectField(choices=TAG_CHOICES, max_choices=5, max_length=50, null=True)
+
+    hashtags = MultiSelectField(
+        choices=TAG_CHOICES, max_choices=5, max_length=50, null=True)
     content = models.CharField(
         max_length=70, verbose_name='임보자 한마디', null=False, default="한마디 없음")
-    alert = models.TextField(verbose_name='특이사항', null=False, default="특이사항 없음")
+    alert = models.TextField(
+        verbose_name='특이사항', null=False, default="특이사항 없음")
     image1 = models.ImageField(verbose_name='공고동물 사진', null=False, blank=True)
     image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
     image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
@@ -78,8 +82,9 @@ class Userpost(models.Model):
         null=True,
         blank=True
     )
-    
-    #tags = TaggableManager()
-    
+    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+
+    # tags = TaggableManager()
+
     def __str__(self):
         return self.name
