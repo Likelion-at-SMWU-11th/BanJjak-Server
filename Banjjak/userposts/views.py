@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from .models import Userpost
 from .serializers import UserpostListSerializer
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+
+class NoPagination(PageNumberPagination):
+    page_size = 100  # 원하는 페이지 크기로 설정
 
 class CanWritePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -18,7 +22,8 @@ class CanDeletePostPermission(permissions.BasePermission):
         return obj.writer == request.user
 
 class UserpostViewSet(viewsets.ModelViewSet):
-    queryset = Userpost.objects.all()
+    queryset = Userpost.objects.order_by('-id')
+    pagination_class = NoPagination
     serializer_class = UserpostListSerializer
     permission_classes = [IsAuthenticated]  # 로그인 필수 설정
     filter_backends = [filters.SearchFilter]
