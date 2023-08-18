@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from multiselectfield import MultiSelectField
 User = get_user_model()
 
+
 class Request(models.Model):
     TYPE_CHOICES = [
         ('dog', '개'),
@@ -19,8 +20,8 @@ class Request(models.Model):
         ('중성화O', '중성화O'),
         ('중성화X', '중성화X'),
     ]
-    
-    contact=models.TextField(verbose_name="연락처", null=False, default="미입력")
+    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+    contact = models.TextField(verbose_name="연락처", null=False, default="미입력")
     name = models.TextField(verbose_name="이름", null=False, default="미입력")
     animal_type = models.CharField(
         max_length=10,
@@ -28,7 +29,7 @@ class Request(models.Model):
         default='미확인',
         verbose_name="동물"
     )
-    kind=models.CharField(verbose_name="품종", max_length=15, default="미확인")
+    kind = models.CharField(verbose_name="품종", max_length=15, default="미확인")
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
@@ -43,12 +44,15 @@ class Request(models.Model):
     )
     age = models.CharField(max_length=10, verbose_name="나이", default="미확인")
     weight = models.CharField(max_length=10, verbose_name="몸무게", default="미확인")
-    reason=models.CharField(verbose_name='사유', null=False, max_length=20, default="미입력")
-    title=models.CharField(max_length=20, verbose_name='제목', null=False)
+    reason = models.CharField(
+        verbose_name='사유', null=False, max_length=20, default="미입력")
+    title = models.CharField(max_length=20, verbose_name='제목', null=False)
     content = models.CharField(
         max_length=70, verbose_name='내용', null=False)
-    alert = models.TextField(verbose_name='특이사항', null=False, default="특이사항 없음")
-    condition=models.TextField(verbose_name='임보조건', null=False, default="임보조건 없음")
+    alert = models.TextField(
+        verbose_name='특이사항', null=False, default="특이사항 없음")
+    condition = models.TextField(
+        verbose_name='임보조건', null=False, default="임보조건 없음")
     writer = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,

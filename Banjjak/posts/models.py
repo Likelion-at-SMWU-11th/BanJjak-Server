@@ -41,9 +41,12 @@ class Post(models.Model):
     ]
 
     name = models.TextField(verbose_name="공고동물 이름", null=False)
-    image1 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True, upload_to="")
-    image2 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
-    image3 = models.ImageField(verbose_name='공고동물 사진', null=True, blank=True)
+    image1 = models.ImageField(
+        verbose_name='공고동물 사진', null=True, blank=True, upload_to="")
+    image2 = models.ImageField(
+        verbose_name='공고동물 사진', null=True, blank=True, upload_to="")
+    image3 = models.ImageField(
+        verbose_name='공고동물 사진', null=True, blank=True, upload_to="")
     animal_type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,
@@ -79,6 +82,7 @@ class Post(models.Model):
         null=True,
         blank=True
     )
+    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
 
     # tags = TaggableManager()
 
